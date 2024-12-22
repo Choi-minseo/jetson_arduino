@@ -1,11 +1,13 @@
-# jetson_arduino
+![image](https://github.com/user-attachments/assets/cd2da987-26aa-4927-bef2-a2c06b7401c4)# jetson_arduino
 
 ## Jetson and Arduino Integration Guide
 ## 1. Basic Concepts of Jetson and Arduino for my project
-Jetson nano
+
+Jetson nano:
 Jetson is a series of embedded computing boards developed by NVIDIA, designed for AI applications and edge computing. It excels at handling tasks such as image recognition, object detection, and real-time data processing, making it ideal for projects requiring high-performance computing on the edge
 
-Arduino (uno)
+
+Arduino (uno):
 Arduino is an open-source electronics platform known for its simplicity and versatility in building prototypes and small-scale embedded systems. It is often used for controlling sensors, actuators, and other hardware components in IoT and robotics projects.
 
 ## 2.Jetson and Arduino Communication and Integration
@@ -23,21 +25,32 @@ By connecting sensors such as temperature, humidity, or ultrasonic sensors to Ar
 ## 3. Jetson and Arduino Integration Project: CO2 Measurement Using CM1106 Sensor
 This project showcases the integration of Arduino with a CM1106 CO2 sensor to measure carbon dioxide (CO2) levels. The data collected from the sensor can be transmitted to a Jetson device for further analysis, real-time monitoring, and visualization. This setup is ideal for environmental monitoring, indoor air quality assessment, and industrial applications.
 
-Overview
-Objectives
+## Overview
+
+• Objectives
 Measure carbon dioxide (CO2) levels using the CM1106 sensor.
 Establish seamless communication between the CM1106 sensor and Arduino using the I2C protocol.
 Transmit CO2 measurement data to Jetson for additional processing and visualization.
-Key Components
+
+• Key Components
 Arduino Board: Serves as the main controller for the CM1106 sensor.
 
-CM1106 CO2 Sensor: A high-precision sensor for measuring CO2 concentrations. image (3)
+CM1106 CO2 Sensor: A high-precision sensor for measuring CO2 concentrations. 
+
+![image](https://github.com/user-attachments/assets/2a28489e-12f8-4f81-a810-64c71973135e)
+
+
 
 Dedicated Sensor Shield: Simplifies the connection between Arduino and the CM1106 sensor.
 
+![image](https://github.com/user-attachments/assets/f6329901-c8e5-449e-9f50-93730f5c2880)
+
+
+
 Jetson Nano/Xavier: Processes and visualizes data received from Arduino.
 
-Hardware Setup
+
+• Hardware Setup
 Required Components
 CM1106 CO2 Sensor
 Arduino Board (e.g., Arduino Uno, Nano)
@@ -57,9 +70,50 @@ Jetson Integration
 Connect the Arduino to Jetson via USB for serial communication.
 Process data received from Arduino using Python or other programming tools for visualization and analysis.
 
-Software Setup
-Arduino Code
+
+## Software Setup
+• Arduino Code
 Below is the Arduino code used to interface with the CM1106 sensor, read CO2 levels, and transmit the data.
+
+```
+// Code to read CO2 levels from the CM1106 sensor
+
+#include <cm1106_i2c.h> // Library for CM1106 CO2 Sensor
+
+// Initialize the CM1106 I2C object
+CM1106_I2C cm1106_i2c;
+
+void setup() {
+    // Start I2C communication with the sensor
+    cm1106_i2c.begin();
+    
+    // Start serial communication for data output
+    Serial.begin(9600);
+    
+    // Wait for the sensor to stabilize
+    delay(5000);
+}
+
+void loop() {
+    // Measure CO2 levels
+    uint8_t ret = cm1106_i2c.measure_result();
+
+    if (ret == 0) {
+        // Successfully read CO2 data
+        Serial.print("CO2: ");
+        Serial.println(cm1106_i2c.co2); // Print CO2 concentration
+    } else {
+        // Failed to read data
+        Serial.println("Error reading sensor data.");
+    }
+    
+    // Wait 5 seconds before the next reading
+    delay(5000);
+}
+```
+
+*** Click the link below to view the experiments conducted using the Arduino code and their results! ***
+-> https://github.com/hoohsh/jetson_arduino/blob/main/arduino_experiment.md
 
 
 
